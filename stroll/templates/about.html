@@ -1,4 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>About Page</h1>
+    <article class="media content-section">
+        <div class="media-body">
+          <h2><a class="article-title" href="#">About StroLL:</a></h2>
+          <p class="article-content">Going for a walk has never been easier. You don't have to take time out of your day to plan your walk any more! Enter your preferences and leave it to us.</p>
+        </div>
+      </article>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            No account? <a class="ml-2" href="{{ url_for('register') }}">Register Here</a>
+        </small>
+    </div>
+      <div class="pt-3">
+        <small class="text-muted">
+            Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
+        </small>
+    </div>   
 {% endblock content %}
