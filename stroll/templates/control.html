@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">API Control Inputs</legend>
+              <div class="form-group">
+                  {{ form.origin_lat_long.label(class="form-control-label") }}
+                  {% if form.origin_lat_long.errors %}
+                      {{ form.origin_lat_long(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.origin_lat_long.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.origin_lat_long(class="form-control form-control-lg") }}
+                  {% endif %}
+              </div>
+              <div class="form-group">
+                {{ form.direction.label(class="form-control-label") }}
+                {% if form.direction.errors %}
+                    {{ form.direction(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.direction.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.direction(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>          
+        </fieldset>
+          <div class="form-group">
+              {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+      </form>
+  </div>
+{% endblock content %}

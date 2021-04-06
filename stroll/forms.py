@@ -5,7 +5,6 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from stroll.models import User
 
-
 class RegisterForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
@@ -54,3 +53,8 @@ class UpdateForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Invalid email.')
+
+class MapForm(FlaskForm):
+    origin_lat_long = StringField('Origin Location', validators=[DataRequired()])
+    direction = StringField('Direction', validators=[DataRequired()])
+    submit = SubmitField('Submit')

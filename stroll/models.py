@@ -10,12 +10,11 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     # journey = db.relationship('Journey', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+        return f"User('{self.username}', '{self.email}')"
 
 
 class Journey(db.Model):
@@ -24,8 +23,10 @@ class Journey(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     journey_image_file = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    start_point = db.Column(db.Integer, nullable=False)
-    end_point = db.Column(db.Integer, nullable=False)
+    start_point_long = db.Column(db.Integer, nullable=False)
+    start_point_lat = db.Column(db.Integer, nullable=False)
+    end_point_long = db.Column(db.Integer, nullable=False)
+    end_point_lat = db.Column(db.Integer, nullable=False)
     length_distance = db.Column(db.Integer, nullable=False) #may change to float
 
     def __repr__(self):
@@ -33,8 +34,8 @@ class Journey(db.Model):
 
 class Attractions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    latitude = db.Column(db.String, nullable=False)
-    longitude = db.Column(db.String, nullable=False)
+    attr_lat = db.Column(db.String, nullable=False)
+    attr_long = db.Column(db.String, nullable=False)
     attractionName = db.Column(db.String(100), nullable=False)
     attractionDescriptor = db.Column(db.String(100), nullable=False)
 
