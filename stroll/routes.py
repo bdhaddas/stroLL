@@ -1,11 +1,12 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, jsonify
 from stroll import app, db, bcrypt
 from stroll.forms import RegisterForm, LoginForm, UpdateForm, MapForm
 from stroll.models import User
 from flask_login import login_user, current_user, logout_user, login_required
+from stroll.journeys.journeyMaker import coord_radial, get_directions
 
 
 journeys = [
@@ -28,10 +29,31 @@ journeys = [
 def home():
     return render_template('home.html', journeys=journeys)
 
-@app.route("/control")
+@app.route("/control", methods=['GET', 'POST'])
 def control():
     form = MapForm()
     return render_template('control.html', title='API Control', form=form)
+
+@app.route("/directions", methods=['GET', 'POST'])
+def getdirections():
+
+
+    if request.method == "POST":
+
+        user_lat_long = request.form['origin_lat_long']
+        user_direction = request.form['direction']
+
+        user_lat_long = user_lat_long.split(",")
+        user_lat_long = list(map(float, user_lat_long))
+
+        midpoint = coord_radial(user_lat_long, 1, user_direction)
+        routecycle = get_directions(user_lat_long, user_lat_long, midpoint)
+
+        return jsonify(routecycle)
+
+    return redirect("/control")
+		
+
 
 @app.route("/about")
 def about():

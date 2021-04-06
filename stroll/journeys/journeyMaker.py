@@ -40,32 +40,11 @@ def coord_radial(origin, radius, compassDirection): #? generateRadialPath(origin
 
         new_point[1] += opp
         coord_points.append(new_point)
-    
-    print("these are the coordinate points calculated:")
-    print(coord_points)
 
     return coord_points
 
-temp = [[40.71871555587496, -73.961452], [40.714224, -73.95696044412504], [40.709732444125045, -73.961452], [40.714224, -73.96594355587494]]
-
 def get_directions(origin, destination, midpoint):
     directions = gmaps.directions(origin, destination, waypoints=midpoint, mode="walking")
-    with open("directions.json", "w+") as json_file:
-        json.dump(directions, json_file, indent = 4, sort_keys=True)
+    #with open("directions.json", "w+") as json_file:
+    #    json.dump(directions, json_file, indent = 4, sort_keys=True)
     return directions
-
-# def coord_validity(point):
-#     correct_points = []
-#     for item in point:
-#         print(item)
-#         reverse_geocode_result = gmaps.reverse_geocode(item, result_type="street_address")
-#         print(reverse_geocode_result)
-#         if reverse_geocode_result != []:
-#             #with open("filename.json", "a") as json_file:
-#             #    json.dump(reverse_geocode_result, json_file, indent = 4, sort_keys=True)
-#             correct_points.append(item)
-#     print (correct_points)
-
-coord_radial([40.714224, -73.961452], 1, 'East')
-
-get_directions([40.714224,-73.961452], [40.714224,-73.961452], temp)
