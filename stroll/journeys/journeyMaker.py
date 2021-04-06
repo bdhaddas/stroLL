@@ -4,7 +4,7 @@ import json
 import objectpath
 import math
 
-gmaps = googlemaps.Client(key='AIzaSyBDMvFZ1RTafs_lcGWRLf4CJhkmiMDtNsI')
+gmaps = googlemaps.Client(key='')
 
 def coord_radial(origin, radius, compassDirection): #? generateRadialPath(origin
     radius_deg = radius/111.32
