@@ -1,10 +1,9 @@
 import os
 import secrets
-from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from stroll import app, db, bcrypt
 from stroll.forms import RegisterForm, LoginForm, UpdateForm, MapForm, PreferencesForm
-from stroll.models import User, Preferences
+from stroll.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 from stroll.journeys.journeyMaker import coord_radial, get_directions
 
@@ -116,7 +115,7 @@ def account():
     return render_template('account.html', title='Account',
                            form=form)
 
-@app.route("/account/setPreferences", methods=['POST']) #<id>
+@app.route("/preferences_set", methods=['POST']) #<id>
 @login_required
 def preferences():
     form = PreferencesForm()
@@ -128,15 +127,15 @@ def preferences():
         current_user.pace = form.pace.data
         db.session.commit
         flash('Preferences successfully set', 'success')
-        return redirect(url_for('account/preferences'))
-        
+        # return redirect(url_for('account/preferences'))
+    return render_template('preferences_set.html', title='Set Pref', form=form)    
 
-@app.route("/account/preferences", methods=['GET'])
-@login_required
-return render_template('preferences.html', title='preferences')
+#@app.route("/preferences", methods=['GET'])
+#@login_required
+    # return render_template('preferences.html', title='preferences')
 
 
-@app.route("/account/updatePreferences", methods=['PUT'])
+@app.route("/preferences_update", methods=['PUT'])
 @login_required
 def updatePreferences():
     form = PreferencesForm()
@@ -148,4 +147,5 @@ def updatePreferences():
         current_user.pace = form.pace.data
         db.session.commit
         flash('Preferences successfully updated', 'success')
-        return redirect(url_for('account/preferences'))
+        # return redirect(url_for('account/preferences'))
+    return render_template('preferences_update.html', title='Update Pref', form=form)

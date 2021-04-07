@@ -5,16 +5,16 @@ import objectpath
 import math
 import random
 
-with open('apikey.txt') as f:
-    api_key = f.readline()
-    f.close
-gmaps = googlemaps.Client(key=api_key) 
+# with open('apikey.txt') as f:
+#     api_key = f.readline()
+#     f.close
+gmaps = googlemaps.Client(key='AIzaSyCzSDLwakvV-7nq3GXYc1sAapKFiAL8Fd4') 
 
 
 # type definitions
 kilometers, latitude, longitude = float, float, float
-coordinates = list[latitude, longitude]
-
+coordinates = [latitude, longitude]
+#'type' object is not subscriptable
 
 def genRandCoordWithinCircle(origin: coordinates, radius: kilometers) -> coordinates:
     """Generates a single pair of coordinates within a radius from the origin"""
@@ -96,7 +96,7 @@ def distanceBetweenCoords(lat1, lon1, lat2, lon2) -> kilometers:
     d = R * c
     return d
 
-def makeVisitAttractions(waypoints: list[coordinates], attractions: list[coordinates], maxConnectDistance: kilometers) -> list[coordinates]:
+def makeVisitAttractions(waypoints: [coordinates], attractions: [coordinates], maxConnectDistance: kilometers) -> [coordinates]:
     """Updates waypoints along a journey to visit nearby attractions where each attraction has to be within maxConnectDistance of a waypoint"""
     newWaypoints = []
     usedUpAttractions = set()
@@ -122,10 +122,10 @@ def makeVisitAttractions(waypoints: list[coordinates], attractions: list[coordin
     return newWaypoints
 
 #test cases 
-startEnd = [40.714224, -73.961452]
-midpoints = [[40.71871555587496, -73.961452], [40.714224, -73.95696044412504]]
-attractions = [[40.71847869766016, -73.96370918121455], [40.71851040694706, -73.9604272356968]]
+#startEnd = [40.714224, -73.961452]
+#midpoints = [[40.71871555587496, -73.961452], [40.714224, -73.95696044412504]]
+#attractions = [[40.71847869766016, -73.96370918121455], [40.71851040694706, -73.9604272356968]]
 
-print(makeVisitAttractions(midpoints, attractions, 1))
+#print(makeVisitAttractions(midpoints, attractions, 1))
 
 
