@@ -31,14 +31,13 @@ def genRandCoordWithinCircle(origin: coordinates, radius: kilometers) -> coordin
     return [pLat, pLng]
 
 
-def genPathWithinCircle(origin: coordinates, radius: kilometers, waypointCount: int):
-    destination = origin  # return to where you started at end of journey
+def genWaypointsWithinCircle(origin: coordinates, radius: kilometers, waypointCount: int):
     waypoints = []
 
     for i in range(waypointCount):
         waypoints.append(genRandCoordWithinCircle(origin, radius))
 
-    return gmaps.directions(origin, destination, waypoints=waypoints, mode="walking")
+    return waypoints #gmaps.directions(origin, destination, waypoints=waypoints, mode="walking")
 
 
 def coord_radial(origin, radius, compassDirection):  # ? generateRadialPath(origin
@@ -79,9 +78,9 @@ def coord_radial(origin, radius, compassDirection):  # ? generateRadialPath(orig
     return coord_points
 
 
-def get_directions(origin, destination, midpoint):
+def get_directions(origin, destination, midpoints):
     directions = gmaps.directions(
-        origin, destination, waypoints=midpoint, mode="walking"
+        origin, destination, waypoints=midpoints, mode="walking"
     )
     # with open("directions.json", "w+") as json_file:
     #    json.dump(directions, json_file, indent = 4, sort_keys=True)
