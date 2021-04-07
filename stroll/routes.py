@@ -3,8 +3,8 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from stroll import app, db, bcrypt
-from stroll.forms import RegisterForm, LoginForm, UpdateForm, MapForm
-from stroll.models import User
+from stroll.forms import RegisterForm, LoginForm, UpdateForm, MapForm, PreferencesForm
+from stroll.models import User, Preferences
 from flask_login import login_user, current_user, logout_user, login_required
 from stroll.journeys.journeyMaker import coord_radial, get_directions
 
@@ -44,7 +44,7 @@ def getdirections():
 
         user_lat_long = request.form['origin_lat_long']
         user_direction = request.form['direction']
-
+    
         user_lat_long = user_lat_long.split(",")
         user_lat_long = list(map(float, user_lat_long))
 
@@ -115,3 +115,37 @@ def account():
         form.email.data = current_user.email
     return render_template('account.html', title='Account',
                            form=form)
+
+@app.route("/account/setPreferences", methods=['POST']) #<id>
+@login_required
+def preferences():
+    form = PreferencesForm()
+    if form.validate_on_submit():
+        current_user.water = form.water.data
+        current_user.green_spaces = form.green_spaces.data
+        current_user.traffic = form.traffic.data
+        current_user.buildings = form.buildings.data
+        current_user.pace = form.pace.data
+        db.session.commit
+        flash('Preferences successfully set', 'success')
+        return redirect(url_for('account/preferences'))
+        
+
+@app.route("/account/preferences", methods=['GET'])
+@login_required
+return render_template('preferences.html', title='preferences')
+
+
+@app.route("/account/updatePreferences", methods=['PUT'])
+@login_required
+def updatePreferences():
+    form = PreferencesForm()
+    if form.validate_on_submit():
+        current_user.water = form.water.data
+        current_user.green_spaces = form.green_spaces.data
+        current_user.traffic = form.traffic.data
+        current_user.buildings = form.buildings.data
+        current_user.pace = form.pace.data
+        db.session.commit
+        flash('Preferences successfully updated', 'success')
+        return redirect(url_for('account/preferences'))

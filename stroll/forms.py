@@ -58,3 +58,11 @@ class MapForm(FlaskForm):
     origin_lat_long = StringField('Origin Location', validators=[DataRequired()])
     direction = StringField('Direction', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class PreferencesForm(FlaskForm):
+    water = BooleanField("Would you prefer to walk near water?")
+    green_spaces = BooleanField("Would you prefer to walk near green spaces?")
+    traffic = BooleanField("Would you prefer to walk near roads?")
+    buildings = BooleanField("Would you prefer to walk near notable buildings?")
+    pace = IntegerField("What is your desired pace? (km/hr)", [validators.NumberRange(min=0, max=5)])
+    submit = SubmitField('Submit')

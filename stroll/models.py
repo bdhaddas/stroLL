@@ -11,6 +11,12 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    water = db.Column(db.BooleanField)
+    green_spaces = db.Column(db.BooleanField)
+    traffic = db.Column(db.BooleanField)
+    buildings = db.Column(db.BooleanField)
+    pace = db.Column(db.Integer)
+    
     # journey = db.relationship('Journey', backref='author', lazy=True)
 
     def __repr__(self):
@@ -38,6 +44,10 @@ class Attractions(db.Model):
     attr_long = db.Column(db.String, nullable=False)
     attractionName = db.Column(db.String(100), nullable=False)
     attractionDescriptor = db.Column(db.String(100), nullable=False)
+    water = db.Column(db.BooleanField, nullable=False)
+    green_spaces = db.Column(db.BooleanField, nullable=False)
+    traffic = db.Column(db.BooleanField, nullable=False)
+    buildings = db.Column(db.BooleanField, nullable=False)
 
     def __repr__(self):
         return f"Attraction('{self.attractionName}', '{self.attractionDescriptor}', ('{self.latitude}','{self.longitude}')"

@@ -5,7 +5,11 @@ import objectpath
 import math
 import random
 
-gmaps = googlemaps.Client(key="")
+with open('apikey.txt') as f:
+    api_key = f.readline()
+    f.close
+gmaps = googlemaps.Client(key=api_key) 
+
 
 # type definitions
 kilometers, latitude, longitude = float, float, float
@@ -34,7 +38,7 @@ def genPathWithinCircle(origin: coordinates, radius: kilometers, waypointCount: 
     for i in range(waypointCount):
         waypoints.append(genRandCoordWithinCircle(origin, radius))
 
-    return gmaps.direction(origin, destination, waypoints=waypoints, mode="walking")
+    return gmaps.directions(origin, destination, waypoints=waypoints, mode="walking")
 
 
 def coord_radial(origin, radius, compassDirection):  # ? generateRadialPath(origin
@@ -82,3 +86,46 @@ def get_directions(origin, destination, midpoint):
     # with open("directions.json", "w+") as json_file:
     #    json.dump(directions, json_file, indent = 4, sort_keys=True)
     return directions
+
+def distanceBetweenCoords(lat1, lon1, lat2, lon2) -> kilometers:
+    R = 6378.137
+    dLat = lat2 * math.pi / 180 - lat1 * math.pi / 180
+    dLon = lon2 * math.pi / 180 - lon1 * math.pi / 180
+    a = math.sin(dLat/2) * math.sin(dLat/2) + math.cos(lat1 * math.pi / 180) * math.cos(lat2 * math.pi / 180) * math.sin(dLon/2) * math.sin(dLon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = R * c
+    return d
+
+def makeVisitAttractions(waypoints: list[coordinates], attractions: list[coordinates], maxConnectDistance: kilometers) -> list[coordinates]:
+    """Updates waypoints along a journey to visit nearby attractions where each attraction has to be within maxConnectDistance of a waypoint"""
+    newWaypoints = []
+    usedUpAttractions = set()
+
+    for coordWaypoint in waypoints:
+        newWaypoints.append(coordWaypoint)
+
+        latWaypoint, lngWaypoint = coordWaypoint[0], coordWaypoint[1]
+        closestAttraction, closestDistance = None, maxConnectDistance
+
+        #find closest attraction that hasn't already been added to the new path
+        for coordAttraction in attractions:
+            latAttraction, lngAttraction = coordAttraction[0], coordAttraction[1]
+            distance = distanceBetweenCoords(latWaypoint, lngWaypoint, latAttraction, lngAttraction)
+            if not (str(coordAttraction.copy()) in usedUpAttractions) and (distance < closestDistance):
+                closestAttraction, closestDistance = coordAttraction, distance
+
+        #add the closest attraction as next in the path
+        if closestAttraction:
+            usedUpAttractions.add(str(closestAttraction.copy()))
+            newWaypoints.append(closestAttraction)
+    
+    return newWaypoints
+
+#test cases 
+startEnd = [40.714224, -73.961452]
+midpoints = [[40.71871555587496, -73.961452], [40.714224, -73.95696044412504]]
+attractions = [[40.71847869766016, -73.96370918121455], [40.71851040694706, -73.9604272356968]]
+
+print(makeVisitAttractions(midpoints, attractions, 1))
+
+

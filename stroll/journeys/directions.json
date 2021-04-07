@@ -1,0 +1,576 @@
+[
+    {
+        "bounds": {
+            "northeast": {
+                "lat": 40.7187025,
+                "lng": -73.9569479
+            },
+            "southwest": {
+                "lat": 40.7097322,
+                "lng": -73.9665005
+            }
+        },
+        "copyrights": "Map data \u00a92021",
+        "legs": [
+            {
+                "distance": {
+                    "text": "0.4 mi",
+                    "value": 683
+                },
+                "duration": {
+                    "text": "8 mins",
+                    "value": 498
+                },
+                "end_address": "194 Wythe Ave, Brooklyn, NY 11249, USA",
+                "end_location": {
+                    "lat": 40.7187025,
+                    "lng": -73.9614307
+                },
+                "start_address": "277 Bedford Ave, Brooklyn, NY 11211, USA",
+                "start_location": {
+                    "lat": 40.71421400000001,
+                    "lng": -73.9614246
+                },
+                "steps": [
+                    {
+                        "distance": {
+                            "text": "0.1 mi",
+                            "value": 188
+                        },
+                        "duration": {
+                            "text": "2 mins",
+                            "value": 137
+                        },
+                        "end_location": {
+                            "lat": 40.7155946,
+                            "lng": -73.9602491
+                        },
+                        "html_instructions": "Head <b>northeast</b> on <b>Bedford Ave</b> toward <b>Grand St</b>",
+                        "polyline": {
+                            "points": "y~nwFzqlbMg@W[[w@{@OQ_AcAWYa@c@MX"
+                        },
+                        "start_location": {
+                            "lat": 40.71421400000001,
+                            "lng": -73.9614246
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "0.2 mi",
+                            "value": 295
+                        },
+                        "duration": {
+                            "text": "4 mins",
+                            "value": 212
+                        },
+                        "end_location": {
+                            "lat": 40.7173692,
+                            "lng": -73.9628694
+                        },
+                        "html_instructions": "Turn <b>left</b> onto <b>N 3rd St</b>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "mgowFpjlbMA?qAbCw@zAEFMXmAzBsAfCOVQQ"
+                        },
+                        "start_location": {
+                            "lat": 40.7155946,
+                            "lng": -73.9602491
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "0.1 mi",
+                            "value": 200
+                        },
+                        "duration": {
+                            "text": "2 mins",
+                            "value": 149
+                        },
+                        "end_location": {
+                            "lat": 40.7187025,
+                            "lng": -73.9614307
+                        },
+                        "html_instructions": "Turn <b>right</b> onto <b>Wythe Ave</b><div style=\"font-size:0.9em\">Destination will be on the left</div>",
+                        "maneuver": "turn-right",
+                        "polyline": {
+                            "points": "qrowF|zlbM]_@KM[][]UWyA_BSUc@g@"
+                        },
+                        "start_location": {
+                            "lat": 40.7173692,
+                            "lng": -73.9628694
+                        },
+                        "travel_mode": "WALKING"
+                    }
+                ],
+                "traffic_speed_entry": [],
+                "via_waypoint": []
+            },
+            {
+                "distance": {
+                    "text": "0.5 mi",
+                    "value": 750
+                },
+                "duration": {
+                    "text": "9 mins",
+                    "value": 565
+                },
+                "end_address": "332 Metropolitan Ave, Brooklyn, NY 11211, USA",
+                "end_location": {
+                    "lat": 40.7142563,
+                    "lng": -73.9569451
+                },
+                "start_address": "194 Wythe Ave, Brooklyn, NY 11249, USA",
+                "start_location": {
+                    "lat": 40.7187025,
+                    "lng": -73.9614307
+                },
+                "steps": [
+                    {
+                        "distance": {
+                            "text": "377 ft",
+                            "value": 115
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 84
+                        },
+                        "end_location": {
+                            "lat": 40.7178801,
+                            "lng": -73.9621118
+                        },
+                        "html_instructions": "Head <b>southwest</b> on <b>Wythe Ave</b> toward <b>N 5th St</b>",
+                        "polyline": {
+                            "points": "{zowF|qlbMb@f@RTxA~APU"
+                        },
+                        "start_location": {
+                            "lat": 40.7187025,
+                            "lng": -73.9614307
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "0.3 mi",
+                            "value": 536
+                        },
+                        "duration": {
+                            "text": "7 mins",
+                            "value": 396
+                        },
+                        "end_location": {
+                            "lat": 40.7147567,
+                            "lng": -73.9573301
+                        },
+                        "html_instructions": "Turn <b>left</b> onto <b>N 4th St</b>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "wuowFdvlbMf@_ATc@bB_DP[lCeFNWpAeC`@u@Zk@NYjBkDPN"
+                        },
+                        "start_location": {
+                            "lat": 40.7178801,
+                            "lng": -73.9621118
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "135 ft",
+                            "value": 41
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 32
+                        },
+                        "end_location": {
+                            "lat": 40.7144125,
+                            "lng": -73.9575298
+                        },
+                        "html_instructions": "Turn <b>right</b> onto <b>Roebling St</b>",
+                        "maneuver": "turn-right",
+                        "polyline": {
+                            "points": "gbowFhxkbMRJDDBDBDBBE^XLJg@"
+                        },
+                        "start_location": {
+                            "lat": 40.7147567,
+                            "lng": -73.9573301
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "190 ft",
+                            "value": 58
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 53
+                        },
+                        "end_location": {
+                            "lat": 40.7142563,
+                            "lng": -73.9569451
+                        },
+                        "html_instructions": "Turn <b>left</b> onto <b>Metropolitan Ave</b><div style=\"font-size:0.9em\">Destination will be on the right</div>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "a`owFpykbMJs@Lq@BM"
+                        },
+                        "start_location": {
+                            "lat": 40.7144125,
+                            "lng": -73.9575298
+                        },
+                        "travel_mode": "WALKING"
+                    }
+                ],
+                "traffic_speed_entry": [],
+                "via_waypoint": []
+            },
+            {
+                "distance": {
+                    "text": "0.5 mi",
+                    "value": 866
+                },
+                "duration": {
+                    "text": "11 mins",
+                    "value": 665
+                },
+                "end_address": "199 Broadway, Brooklyn, NY 11211, USA",
+                "end_location": {
+                    "lat": 40.70978969999999,
+                    "lng": -73.96162249999999
+                },
+                "start_address": "332 Metropolitan Ave, Brooklyn, NY 11211, USA",
+                "start_location": {
+                    "lat": 40.7142563,
+                    "lng": -73.9569451
+                },
+                "steps": [
+                    {
+                        "distance": {
+                            "text": "0.1 mi",
+                            "value": 169
+                        },
+                        "duration": {
+                            "text": "2 mins",
+                            "value": 129
+                        },
+                        "end_location": {
+                            "lat": 40.7147436,
+                            "lng": -73.9587956
+                        },
+                        "html_instructions": "Head <b>west</b> on <b>Metropolitan Ave</b> toward <b>Roebling St</b>",
+                        "polyline": {
+                            "points": "c_owF|ukbMCLMp@Kr@Kh@u@rE"
+                        },
+                        "start_location": {
+                            "lat": 40.7142563,
+                            "lng": -73.9569451
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "0.4 mi",
+                            "value": 623
+                        },
+                        "duration": {
+                            "text": "8 mins",
+                            "value": 482
+                        },
+                        "end_location": {
+                            "lat": 40.7099853,
+                            "lng": -73.9622017
+                        },
+                        "html_instructions": "Turn <b>left</b> onto <b>Driggs Ave</b>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "cbowFnalbMv@z@NLJN`@f@B@d@h@ZX|@f@HDJFPJjB`ATJBBxBlATJTL|@f@NHTJJF`@T`@TPHXTVL^P@?FDVLb@VHD"
+                        },
+                        "start_location": {
+                            "lat": 40.7147436,
+                            "lng": -73.9587956
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "243 ft",
+                            "value": 74
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 54
+                        },
+                        "end_location": {
+                            "lat": 40.70978969999999,
+                            "lng": -73.96162249999999
+                        },
+                        "html_instructions": "Turn <b>left</b> onto <b>Broadway</b><div style=\"font-size:0.9em\">Destination will be on the left</div>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "mdnwFvvlbMDMBIT_AFY?A"
+                        },
+                        "start_location": {
+                            "lat": 40.7099853,
+                            "lng": -73.9622017
+                        },
+                        "travel_mode": "WALKING"
+                    }
+                ],
+                "traffic_speed_entry": [],
+                "via_waypoint": []
+            },
+            {
+                "distance": {
+                    "text": "0.6 mi",
+                    "value": 904
+                },
+                "duration": {
+                    "text": "11 mins",
+                    "value": 661
+                },
+                "end_address": "50 S 2nd St, Brooklyn, NY 11249, USA",
+                "end_location": {
+                    "lat": 40.714236,
+                    "lng": -73.9659886
+                },
+                "start_address": "199 Broadway, Brooklyn, NY 11211, USA",
+                "start_location": {
+                    "lat": 40.7097322,
+                    "lng": -73.9614521
+                },
+                "steps": [
+                    {
+                        "distance": {
+                            "text": "0.1 mi",
+                            "value": 219
+                        },
+                        "duration": {
+                            "text": "3 mins",
+                            "value": 164
+                        },
+                        "end_location": {
+                            "lat": 40.7105697,
+                            "lng": -73.9638841
+                        },
+                        "html_instructions": "Head <b>northwest</b> on <b>Broadway</b> toward <b>Driggs Ave</b>",
+                        "polyline": {
+                            "points": "ybnwF`rlbMKb@GXU~@CHELG\\e@jBGVETCJAJCLAFBNEDELCPGXWX"
+                        },
+                        "start_location": {
+                            "lat": 40.7097322,
+                            "lng": -73.9614521
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "0.2 mi",
+                            "value": 242
+                        },
+                        "duration": {
+                            "text": "3 mins",
+                            "value": 169
+                        },
+                        "end_location": {
+                            "lat": 40.7114726,
+                            "lng": -73.9665005
+                        },
+                        "html_instructions": "Continue onto <b>S 6th St</b>",
+                        "polyline": {
+                            "points": "ahnwFfambMENSv@Ml@Oh@Mj@W~@AFK`@GVMj@Oh@Mj@K^GZ"
+                        },
+                        "start_location": {
+                            "lat": 40.7105697,
+                            "lng": -73.9638841
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "0.2 mi",
+                            "value": 342
+                        },
+                        "duration": {
+                            "text": "4 mins",
+                            "value": 261
+                        },
+                        "end_location": {
+                            "lat": 40.7142671,
+                            "lng": -73.9652636
+                        },
+                        "html_instructions": "Turn <b>right</b> onto <b>Wythe Ave</b>",
+                        "maneuver": "turn-right",
+                        "polyline": {
+                            "points": "umnwFrqmbMSGAAIEGACACAA?CAGCAAICKEA?ECA?ICECCAWGMEUIKEuAg@UGo@Us@UWI}Bw@GCEA"
+                        },
+                        "start_location": {
+                            "lat": 40.7114726,
+                            "lng": -73.9665005
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "233 ft",
+                            "value": 71
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 44
+                        },
+                        "end_location": {
+                            "lat": 40.7144391,
+                            "lng": -73.9658946
+                        },
+                        "html_instructions": "Turn <b>left</b> onto <b>S 2nd St</b>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "e_owFzimbMAFKj@G\\ADId@"
+                        },
+                        "start_location": {
+                            "lat": 40.7142671,
+                            "lng": -73.9652636
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "98 ft",
+                            "value": 30
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 23
+                        },
+                        "end_location": {
+                            "lat": 40.714236,
+                            "lng": -73.9659886
+                        },
+                        "html_instructions": "Turn <b>left</b><div style=\"font-size:0.9em\">Destination will be on the left</div>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "g`owFxmmbMf@R"
+                        },
+                        "start_location": {
+                            "lat": 40.7144391,
+                            "lng": -73.9658946
+                        },
+                        "travel_mode": "WALKING"
+                    }
+                ],
+                "traffic_speed_entry": [],
+                "via_waypoint": []
+            },
+            {
+                "distance": {
+                    "text": "0.3 mi",
+                    "value": 503
+                },
+                "duration": {
+                    "text": "6 mins",
+                    "value": 381
+                },
+                "end_address": "277 Bedford Ave, Brooklyn, NY 11211, USA",
+                "end_location": {
+                    "lat": 40.71421400000001,
+                    "lng": -73.9614246
+                },
+                "start_address": "50 S 2nd St, Brooklyn, NY 11249, USA",
+                "start_location": {
+                    "lat": 40.714236,
+                    "lng": -73.9659886
+                },
+                "steps": [
+                    {
+                        "distance": {
+                            "text": "98 ft",
+                            "value": 30
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 20
+                        },
+                        "end_location": {
+                            "lat": 40.7144391,
+                            "lng": -73.9658946
+                        },
+                        "html_instructions": "Head <b>north</b> toward <b>S 2nd St</b>",
+                        "polyline": {
+                            "points": "__owFlnmbMg@S"
+                        },
+                        "start_location": {
+                            "lat": 40.714236,
+                            "lng": -73.9659886
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "0.2 mi",
+                            "value": 354
+                        },
+                        "duration": {
+                            "text": "5 mins",
+                            "value": 275
+                        },
+                        "end_location": {
+                            "lat": 40.7133117,
+                            "lng": -73.96199229999999
+                        },
+                        "html_instructions": "Turn <b>right</b> onto <b>S 2nd St</b>",
+                        "maneuver": "turn-right",
+                        "polyline": {
+                            "points": "g`owFxmmbMHe@@EF]Jk@@GFa@d@kCDU@GDUDORu@BKLa@bBoGH[UK"
+                        },
+                        "start_location": {
+                            "lat": 40.7144391,
+                            "lng": -73.9658946
+                        },
+                        "travel_mode": "WALKING"
+                    },
+                    {
+                        "distance": {
+                            "text": "390 ft",
+                            "value": 119
+                        },
+                        "duration": {
+                            "text": "1 min",
+                            "value": 86
+                        },
+                        "end_location": {
+                            "lat": 40.71421400000001,
+                            "lng": -73.9614246
+                        },
+                        "html_instructions": "Turn <b>left</b> onto <b>Bedford Ave</b>",
+                        "maneuver": "turn-left",
+                        "polyline": {
+                            "points": "eynwFlulbMeB_AEAOKA?s@a@AA"
+                        },
+                        "start_location": {
+                            "lat": 40.7133117,
+                            "lng": -73.96199229999999
+                        },
+                        "travel_mode": "WALKING"
+                    }
+                ],
+                "traffic_speed_entry": [],
+                "via_waypoint": []
+            }
+        ],
+        "overview_polyline": {
+            "points": "y~nwFzqlbMg@W[[gAmAwA}Aa@c@MXsAbC}@bB_EtHwFiGc@g@b@f@lBtBx@uAxBcE`G_LxDgHd@ZHJFHE^XLV{AP_AQ~@W|Au@rEv@z@Z\\d@h@`AbAfAl@~C`BxGpDnBjA`Ad@z@d@HDDMXiAF[Ja@Kb@]xAw@`DSdAETBNEDI^GXWXYfA]vAs@tCe@lBYjAGZSGKGKCICIEo@UgFeBqE{AEAAFShAKj@f@Rg@SJk@RiAt@kE`@cB~ByIqCyAw@c@"
+        },
+        "summary": "Bedford Ave, N 3rd St and Wythe Ave",
+        "warnings": [
+            "Walking directions are in beta. Use caution \u2013 This route may be missing sidewalks or pedestrian paths."
+        ],
+        "waypoint_order": [
+            0,
+            1,
+            2,
+            3
+        ]
+    }
+]
