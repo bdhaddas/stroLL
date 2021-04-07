@@ -8,7 +8,7 @@ import random
 # with open('apikey.txt') as f:
 #     api_key = f.readline()
 #     f.close
-gmaps = googlemaps.Client(key='AIzaSyCzSDLwakvV-7nq3GXYc1sAapKFiAL8Fd4') 
+gmaps = googlemaps.Client(key='') 
 
 
 # type definitions
