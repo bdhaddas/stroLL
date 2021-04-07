@@ -14,7 +14,7 @@ coordinates = list[latitude, longitude]
 
 def genRandCoordWithinCircle(origin: coordinates, radius: kilometers) -> coordinates:
     """Generates a single pair of coordinates within a radius from the origin"""
-    R = 6371  # Approx radius of earth
+    R = 6371  # Approx. radius of earth
     pi = math.pi
     Lat, Lng = (origin[0] * pi) / 180, (origin[1] * pi) / 180
     d = radius * math.sqrt(random.random()) / R
@@ -25,6 +25,16 @@ def genRandCoordWithinCircle(origin: coordinates, radius: kilometers) -> coordin
     pLng = ((Lng + math.atan2(math.sin(brng) * math.sin(d) * math.cos(Lat),
             math.cos(d) - math.sin(Lat) * math.sin(pLat))) * 180) / pi
     return [pLat, pLng]
+
+
+def genPathWithinCircle(origin: coordinates, radius: kilometers, waypointCount: int):
+    destination = origin  # return to where you started at end of journey
+    waypoints = []
+
+    for i in range(waypointCount):
+        waypoints.append(genRandCoordWithinCircle(origin, radius))
+
+    return gmaps.direction(origin, destination, waypoints=waypoints, mode="walking")
 
 
 def coord_radial(origin, radius, compassDirection):  # ? generateRadialPath(origin
