@@ -38,17 +38,19 @@ def control():
 
 @app.route("/directions", methods=['GET', 'POST'])
 def getdirections():
-
+    # TODO: Use newer / non-deprecated methods within POST
     if request.method == "POST":
 
         user_lat_long = request.form['origin_lat_long']
         user_direction = request.form['direction']
-    
+
         user_lat_long = user_lat_long.split(",")
         user_lat_long = list(map(float, user_lat_long))
 
-        midpoint = coord_radial(user_lat_long, 1, user_direction)
-        routecycle = get_directions(user_lat_long, user_lat_long, midpoint)
+        waypoints = coord_radial(
+            user_lat_long, 1, user_direction)  # ! Deprecated
+        routecycle = get_directions(
+            user_lat_long, user_lat_long, waypoints)  # ! Deprecated
 
         return jsonify(routecycle)
 
@@ -115,7 +117,8 @@ def account():
     return render_template('account.html', title='Account',
                            form=form)
 
-@app.route("/preferences_set", methods=['POST']) #<id>
+
+@app.route("/preferences_set", methods=['POST'])  # <id>
 @login_required
 def preferences():
     form = PreferencesForm()
@@ -128,10 +131,10 @@ def preferences():
         db.session.commit
         flash('Preferences successfully set', 'success')
         # return redirect(url_for('account/preferences'))
-    return render_template('preferences_set.html', title='Set Pref', form=form)    
+    return render_template('preferences_set.html', title='Set Pref', form=form)
 
-#@app.route("/preferences", methods=['GET'])
-#@login_required
+# @app.route("/preferences", methods=['GET'])
+# @login_required
     # return render_template('preferences.html', title='preferences')
 
 
