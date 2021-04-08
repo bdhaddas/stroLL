@@ -10,9 +10,8 @@ class RadialJourney(Journey):
         super().__init__(origin, destination, waypoints)
         self.radius = radius
 
-        for _ in range(extraWaypointCount):
-            self.waypoints.append(
-                self.genRandCoordWithinCircle())
+        for i in range(extraWaypointCount):
+            self.waypoints.append(self.genRandCoordWithinCircle())
 
     def genRandCoordWithinCircle(self) -> coordinates:
         """Generates a single pair of coordinates within a radius from the origin"""

@@ -49,7 +49,7 @@ def get_all_user_journeys_json(user_id, json_str=True):
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat FROM journey WHERE user_id = ?;
+    SELECT id, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, waypoints, polyline FROM journey WHERE user_id = ?;
     ''', (user_id,)).fetchall()
 
     conn.commit()
@@ -91,7 +91,7 @@ def get_one_user_journey_json(user_id, id, json_str=True):
 def update_journey(start_point_lat, start_point_long, end_point_lat, end_point_long, waypoints, journey_id, json_str=True):
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
-    cur = con.cursor()
+    cur = conn.cursor()
 
     rows = cur.execute('''
     UPDATE journey SET start_point_lat = ?, start_point_long = ?, end_point_lat = ?, end_point_long = ?, waypoints = ? WHERE id = ?
@@ -145,14 +145,16 @@ def update_journey(start_point_lat, start_point_long, end_point_lat, end_point_l
 #     return(cur.fetchall())
 
 
-def get_attractions(con, water, green_space, traffic, buildings):
-    cur = con.cursor()
+def get_attractions(water, green_space, traffic, buildings):
+    conn = sqlite3.connect(DB)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
     cur.execute("""
         SELECT attr_coordinates FROM attractions WHERE water = ? AND green_space = ? AND traffic = ? AND buildings = ?
         """, (water, green_space, traffic, buildings))
     coordinates = cur.fetchall()
     coordinates = coordinates.split(",")
-    corrdinates = list(map(float, coordinates))
+    coordinates = list(map(float, coordinates))
     return(coordinates)
 
     # got in column : 123.456,123.456

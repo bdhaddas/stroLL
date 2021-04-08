@@ -26,10 +26,10 @@ class Journey(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    start_point_long = db.Column(db.Integer, nullable=False)
-    start_point_lat = db.Column(db.Integer, nullable=False)
-    end_point_long = db.Column(db.Integer, nullable=False)
-    end_point_lat = db.Column(db.Integer, nullable=False)
+    start_point_long = db.Column(db.Float, nullable=False)
+    start_point_lat = db.Column(db.Float, nullable=False)
+    end_point_long = db.Column(db.Float, nullable=False)
+    end_point_lat = db.Column(db.Float, nullable=False)
     waypoints = db.Column(db.String, nullable=False) #JSON format of a list of coordinates
     is_private = db.Column(db.Boolean, nullable=False)
     polyline = db.Column(db.String)
