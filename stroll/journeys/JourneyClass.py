@@ -29,10 +29,10 @@ def distanceBetweenCoords(lat1: latitude, lon1: longitude, lat2: latitude, lon2:
 
 class Journey(ABC):  # * Abstract Class
     @abstractmethod
-    def __init__(self, origin: coordinates, destination: coordinates, waypoints=[]):
+    def __init__(self, origin: coordinates, destination: coordinates, waypoints=None):
         self.origin = origin
         self.destination = destination
-        self.waypoints = waypoints
+        self.waypoints = waypoints or []
     
     @abstractmethod
     def getGmapsDirections(self, mode="walking") -> str:
@@ -70,3 +70,5 @@ class Journey(ABC):  # * Abstract Class
                 newWaypoints.append(closestAttraction)
 
         self.waypoints = newWaypoints
+
+            

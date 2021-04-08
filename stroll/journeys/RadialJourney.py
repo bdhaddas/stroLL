@@ -6,7 +6,7 @@ from .JourneyClass import Journey, kilometers, latitude, longitude, coordinates
 class RadialJourney(Journey):
     """Creates a journey within a circular region by randomly generating waypoints within a radius"""
 
-    def __init__(self, origin: coordinates, destination: coordinates, waypoints=[], radius: kilometers, extraWaypointCount: int):
+    def __init__(self, origin: coordinates, destination: coordinates, radius: kilometers, extraWaypointCount: int, waypoints=None):
         super().__init__(origin, destination, waypoints)
         self.radius = radius
 

@@ -1,13 +1,12 @@
 import os
 import secrets
 import sqlite3
-from flask import render_template, url_for, flash, redirect, request, jsonify, HTTPBasicAuth
-from __init__ import app, db, bcrypt
+from flask import render_template, url_for, flash, redirect, request, jsonify, abort
+from stroll import app, db, bcrypt
 from stroll.models import User, Journey
 from flask_login import login_user, current_user, logout_user, login_required
-from stroll.journeys import RadialJourney, SimpleJourney, attractionFinder
 from stroll.connect import get_all_users_json, get_user_json, get_all_user_journeys_json, get_one_user_journey_json, update_journey
-from stroll.journeys import RadialJourney, SimpleJourney, Attractions
+from stroll.journeys import RadialJourney, SimpleJourney, getPolyline
 
 
 # /users    GET: Shows list of users, POST: Add new user
@@ -52,52 +51,37 @@ def users():
         return content
 
 
-@app.route("/login", methods['POST'])
+@app.route("/login", methods=['POST'])
 def login():
-    content = request.get_json() #content['username'] & content['password'] should exist for you to use
-    def verify_password(username, password): 
-        user = User.query.filter_by(username = username).first()
-        login_user()
-    if not user or not user.verify_password(password):
-        return False
-    g.user = user
-    return True
+    content = request.get_json() 
+    user = User.query.filter_by(username = content['username']).first()
+    if not user or not bcrypt.check_password_hash(user.password, content['password']):
+        return abort(403)
+    login_user(user)
+    return redirect('/')
     
 
-@app.route("/logout", methods['POST'])
+@app.route("/logout", methods=['POST'])
 def logout():
     logout_user()
     return redirect('/')
 
 
-@app.route("/users/<user_id>", methods=['GET', 'PUT'])
+@app.route("/users/<user_id>", methods=['GET'])
 def userRequest(user_id):
     if request.method == 'GET':
         #if user has access, show everything, otherwise, show some stuff but don't show sensitive information like passwords
         content = get_user_json(user_id, json_str=True)
         return content
-    elif request.method == 'PUT' and request.is_json:
-        content = request.get_json()
-        if content['username'] is None or content['password'] is None:
-            abort(400) 
-        if User.query.filter_by(username = content['username']).first() is not None:
-            abort(400)
-        #do they have access? is current_user == logged in user
-        #check the cookie of the person who sent this and compare to the cookie of user_id
-        # if User.query.filter_by(id=current_user.id).first() == user_id        @Tomm + Balraj
-        # show __repr__ of current_user
-
 
 @app.route("/users/<user_id>/journeys", methods=['GET', 'POST'])
 def journeys(user_id):
     if request.method == 'GET':
         #if user has access, show all journeys, if not, show only is_private = false journeys
-        if user has access:
-            content = get_all_user_journeys_json(user_id, json_str=True)
-            return content
-        else:
-            content = get_private_user_journeys_json(user_id, json_str=True)
-            return content
+        
+        content = get_all_user_journeys_json(user_id, json_str=True)
+        return content
+        
     elif request.method == 'POST' and request.is_json: #need to make error proof if malformed input passed
         content = request.get_json()
         #does user have access? if not 400 access denied
@@ -113,6 +97,35 @@ def journeys(user_id):
         """
         #! Write an outer function or import for handling visit nearby attractions. 
         journey_type = content['journey_type']
+        start_point_lat, start_point_long = content['origin']['start_point_lat'], content['origin']['start_point_long']
+        end_point_lat, end_point_long = content['destination']['end_point_lat'], content['destination']['end_point_long']
+        waypoints = content['waypoints'] or []
+        gmapsOutput = None
+        if journey_type == "Simple":
+            journey = SimpleJourney(origin, destination, waypoints).getGmapsDirections()
+            gmapsOutput = journey.getGmapsDirections()
+        elif journey_type == "Radial":
+            radius = content['radius'] or 10
+            journey = RadialJourney(origin, destination, radius, waypoints, 5)
+            gmapsOutput = journey.getGmapsDirections()
+        else:
+            return abort(404, "Unknown journey type")
+        
+        waypoints = journey.waypoints
+
+        newJourney = Journey(
+            user_id = user_id,
+            start_point_long = start_point_long,
+            start_point_lat = start_point_lat,
+            end_point_long = end_point_long,
+            end_point_lat = end_point_lat,
+            waypoints = jsonify(waypoints),
+            is_private = False,
+            polyline = getPolyline(gmapsOutput)
+        )
+        db.session.add(newJourney)
+        db.session.commit()
+        return content
 
 @app.route("/users/<user_id>/journeys/<journey_id>", methods=['PUT'])
 def journeyRequest(user_id, journey_id):

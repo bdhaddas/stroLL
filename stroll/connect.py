@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-DB = "site.db"
+DB = '/stroll/stroll/site.db'
 
 
 def get_all_users_json(json_str=True):
@@ -30,7 +30,7 @@ def get_user_json(username, json_str=True):
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, username, email, water, green_spaces, buildings, traffic from user WHERE username = ?;
+    SELECT id, username, email, water, green_spaces, buildings, traffic from user WHERE id = ?;
     ''', (username,)).fetchall()
 
     conn.commit()
@@ -49,7 +49,7 @@ def get_all_user_journeys_json(user_id, json_str=True):
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, author, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ?;
+    SELECT id, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat FROM journey WHERE user_id = ?;
     ''', (user_id,)).fetchall()
 
     conn.commit()
@@ -66,7 +66,7 @@ def get_private_user_journeys_json(user_id, json_str=True):
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, author, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND is_private = '1';
+    SELECT id, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND is_private = '1';
     ''')
 
 def get_one_user_journey_json(user_id, id, json_str=True):
@@ -76,7 +76,7 @@ def get_one_user_journey_json(user_id, id, json_str=True):
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, author, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND id = ?;
+    SELECT id, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND id = ?;
     ''', (user_id, id,)).fetchall()
 
     conn.commit()
@@ -105,8 +105,6 @@ def update_journey(start_point_lat, start_point_long, end_point_lat, end_point_l
 
 # # create an SQL connection to the SQLite database
 # con = sqlite3.connect("site.db")
-
-# cur = con.cursor()
 
 # # # printing everything from user
 # # for row in cur.execute('SELECT * FROM user;'):
@@ -148,6 +146,7 @@ def update_journey(start_point_lat, start_point_long, end_point_lat, end_point_l
 
 
 def get_attractions(con, water, green_space, traffic, buildings):
+    cur = con.cursor()
     cur.execute("""
         SELECT attr_coordinates FROM attractions WHERE water = ? AND green_space = ? AND traffic = ? AND buildings = ?
         """, (water, green_space, traffic, buildings))

@@ -1,5 +1,5 @@
 from datetime import datetime
-from __init__ import app, db, login_manager #used to be from stroll
+from stroll import app, db, login_manager #used to be from stroll
 from flask_login import UserMixin
 
 @login_manager.user_loader
@@ -16,7 +16,6 @@ class User(db.Model, UserMixin):
     traffic = db.Column(db.Boolean)
     buildings = db.Column(db.Boolean)
     pace = db.Column(db.Integer)
-    journeys = db.relationship('Journey', backref='author', lazy=True) 
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -24,7 +23,6 @@ class User(db.Model, UserMixin):
     
 class Journey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

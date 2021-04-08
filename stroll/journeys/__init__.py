@@ -1,1 +1,3 @@
-from . import RadialJourney, SimpleJourney, Attractions
+from RadialJourney import RadialJourney
+from SimpleJourney import SimpleJourney
+from Attractions import getPolyline
