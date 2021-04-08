@@ -1,13 +1,12 @@
-import googlemaps
 import math
 import random
 from .JourneyClass import Journey, kilometers, latitude, longitude, coordinates
 
 
 class RadialJourney(Journey):
-    """Generates waypoints within a defined circular region"""
+    """Creates a journey within a circular region by randomly generating waypoints within a radius"""
 
-    def __init__(self, origin: coordinates, destination: coordinates, radius: kilometers, extraWaypointCount: int) -> list[coordinates]:
+    def __init__(self, origin: coordinates, destination: coordinates, radius: kilometers, extraWaypointCount: int):
         super().__init__(origin, destination)
         self.radius = radius
 

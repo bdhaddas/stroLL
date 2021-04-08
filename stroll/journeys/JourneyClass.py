@@ -44,7 +44,7 @@ class Journey(ABC):  # * Abstract Class
         return directions
 
     @abstractmethod
-    def makeVisitAttractions(self, attractions: list[coordinates], maxConnectDistance: kilometers = 3) -> list[coordinates]:
+    def makeVisitAttractions(self, attractions: list[coordinates], maxConnectDistance: kilometers = 3):
         """Updates waypoints along a journey to visit nearby attractions where each attraction has to be within maxConnectDistance of a waypoint"""
         waypoints = self.waypoints
         newWaypoints = []
@@ -69,4 +69,4 @@ class Journey(ABC):  # * Abstract Class
                 usedUpAttractions.add(str(closestAttraction.copy()))
                 newWaypoints.append(closestAttraction)
 
-        return newWaypoints
+        self.waypoints = newWaypoints
