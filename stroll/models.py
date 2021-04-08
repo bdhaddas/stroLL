@@ -1,5 +1,5 @@
 from datetime import datetime
-from stroll import db, login_manager
+from stroll import app, db, login_manager
 from flask_login import UserMixin
 
 
@@ -22,6 +22,8 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
+    
 
 
 class Journey(db.Model):

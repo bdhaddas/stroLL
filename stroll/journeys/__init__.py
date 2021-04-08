@@ -1,1 +1,1 @@
-from . import RadialJourney, SimpleJourney, attractionFinder
+from . import RadialJourney, SimpleJourney, Attractions

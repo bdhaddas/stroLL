@@ -1,17 +1,17 @@
 import sqlite3
 import json
 
-DB = "site.db"
+db = "site.db"
 
 
 def get_all_users_json(json_str=True):
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(db)
     # This enables column access by name: row['column_name']
     conn.row_factory = sqlite3.Row
-    db = conn.cursor()
+    cur = conn.cursor()
 
-    rows = db.execute('''
-    SELECT id, username, email, water, green_spaces, buildings, traffic from user
+    rows = cur.execute('''
+    SELECT id, username, email, water, green_spaces, buildings, traffic from user;
     ''').fetchall()
 
     conn.commit()
@@ -24,14 +24,14 @@ def get_all_users_json(json_str=True):
 
 
 def get_user_json(username, json_str=True):
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(db)
     # This enables column access by name: row['column_name']
     conn.row_factory = sqlite3.Row
-    db = conn.cursor()
+    cur = conn.cursor()
 
-    rows = db.execute('''
-    SELECT id, username, email, water, green_spaces, buildings, traffic from user WHERE username = ?
-    ''', (username)).fetchall()
+    rows = cur.execute('''
+    SELECT id, username, email, water, green_spaces, buildings, traffic from user WHERE username = ?;
+    ''', (username,)).fetchall()
 
     conn.commit()
     conn.close()
@@ -43,14 +43,14 @@ def get_user_json(username, json_str=True):
 
 
 def get_all_user_journeys_json(user_id, json_str=True):
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(db)
     # This enables column access by name: row['column_name']
     conn.row_factory = sqlite3.Row
-    db = conn.cursor()
+    cur = conn.cursor()
 
-    rows = db.execute('''
-    SELECT id, author, date_posted, journey_image_file, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ?
-    ''', (user_id)).fetchall()
+    rows = cur.execute('''
+    SELECT id, author, date_posted, journey_image_file, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ?;
+    ''', (user_id,)).fetchall()
 
     conn.commit()
     conn.close()
@@ -61,14 +61,14 @@ def get_all_user_journeys_json(user_id, json_str=True):
     return rows
 
 def get_one_user_journey_json(user_id, id, json_str=True):
-    conn = sqlite3.connect(DB)
+    conn = sqlite3.connect(db)
     # This enables column access by name: row['column_name']
     conn.row_factory = sqlite3.Row
-    db = conn.cursor()
+    cur = conn.cursor()
 
-    rows = db.execute('''
-    SELECT id, author, date_posted, journey_image_file, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND id = ?
-    ''', (user_id, id)).fetchall()
+    rows = cur.execute('''
+    SELECT id, author, date_posted, journey_image_file, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND id = ?;
+    ''', (user_id, id,)).fetchall()
 
     conn.commit()
     conn.close()
