@@ -1,0 +1,50 @@
+<html> 
+<head> 
+<title>Test</title> 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&amp;sensor=false&key=AIzaSyCzSDLwakvV-7nq3GXYc1sAapKFiAL8Fd4"></script>
+<style type="text/css"> 
+#map {width:100%;height:100%;}
+</style> 
+<script type='text/javascript'>
+function initialize() {
+    var myLatlng = new google.maps.LatLng(40.71421400000001, -73.9614246);
+    var myOptions = {
+        zoom: 16,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+// =====POLYLINE STRING GOES HERE==========================================================================================
+
+    var decodedPath = google.maps.geometry.encoding.decodePath('y~nwFzqlbMg@W[[gAmAwA}Aa@c@MXsAbC}@bB_EtHwFiGc@g@b@f@lBtBx@uAxBcE`G_LxDgHd@ZHJFHE^XLV{AP_AQ~@W|Au@rEv@z@Z\\d@h@`AbAfAl@~C`BxGpDnBjA`Ad@z@d@HDDMXiAF[Ja@Kb@]xAw@`DSdAETBNEDI^GXWXYfA]vAs@tCe@lBYjAGZSGKGKCICIEo@UgFeBqE{AEAAFShAKj@f@Rg@SJk@RiAt@kE`@cB~ByIqCyAw@c@'); 
+    
+// ========================================================================================================================    
+    
+    var decodedLevels = decodeLevels("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
+    var setRegion = new google.maps.Polyline({
+        path: decodedPath,
+        levels: decodedLevels,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 4,
+        map: map
+    });
+}
+
+function decodeLevels(encodedLevelsString) {
+    var decodedLevels = [];
+
+    for (var i = 0; i < encodedLevelsString.length; ++i) {
+        var level = encodedLevelsString.charCodeAt(i) - 63;
+        decodedLevels.push(level);
+    }
+    return decodedLevels;
+}
+</script> 
+</head> 
+<body onload="initialize()"> 
+<div id="map"></div>
+</body> 
+</html>
