@@ -98,7 +98,7 @@ def distanceBetweenCoords(lat1: latitude, lon1: longitude, lat2: latitude, lon2:
     return d
 
 
-def makeVisitAttractions(waypoints: [coordinates], attractions: [coordinates], maxConnectDistance: kilometers) -> list[coordinates]:
+def makeVisitAttractions(waypoints: list[coordinates], attractions: list[coordinates], maxConnectDistance: kilometers) -> list[coordinates]:
     """Updates waypoints along a journey to visit nearby attractions where each attraction has to be within maxConnectDistance of a waypoint"""
     newWaypoints = []
     usedUpAttractions = set()

@@ -29,21 +29,24 @@ def distanceBetweenCoords(lat1: latitude, lon1: longitude, lat2: latitude, lon2:
 
 class Journey(ABC):  # * Abstract Class
     @abstractmethod
-    def __init__():
-        
+    def __init__(self, origin: coordinates, destination: coordinates):
+        self.origin = origin
+        self.destination = destination
+        self.waypoints = []
 
     @abstractmethod
-    def getGmapsDirections(self, origin: coordinates, destination: coordinates, waypoints: list[coordinates]) -> str:
+    def getGmapsDirections(self, mode="walking") -> str:
         directions = gmaps.directions(
-            origin, destination, waypoints=waypoints, mode="walking"
+            self.origin, self.destination, waypoints=self.waypoints, mode=mode
         )
         # with open("directions.json", "w+") as json_file:
         #    json.dump(directions, json_file, indent = 4, sort_keys=True)
         return directions
 
     @abstractmethod
-    def makeVisitAttractions(self, waypoints: [coordinates], attractions: [coordinates], maxConnectDistance: kilometers) -> list[coordinates]:
+    def makeVisitAttractions(self, attractions: list[coordinates], maxConnectDistance: kilometers = 3) -> list[coordinates]:
         """Updates waypoints along a journey to visit nearby attractions where each attraction has to be within maxConnectDistance of a waypoint"""
+        waypoints = self.waypoints
         newWaypoints = []
         usedUpAttractions = set()
 
