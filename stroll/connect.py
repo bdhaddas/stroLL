@@ -1,17 +1,17 @@
 import sqlite3
 import json
 
-db = "site.db"
+DB = "site.db"
 
 
 def get_all_users_json(json_str=True):
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(DB)
     # This enables column access by name: row['column_name']
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, username, email, water, green_spaces, buildings, traffic from user;
+    SELECT id, username, water, green_spaces, buildings, traffic from user;
     ''').fetchall()
 
     conn.commit()
@@ -24,7 +24,7 @@ def get_all_users_json(json_str=True):
 
 
 def get_user_json(username, json_str=True):
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(DB)
     # This enables column access by name: row['column_name']
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -43,13 +43,13 @@ def get_user_json(username, json_str=True):
 
 
 def get_all_user_journeys_json(user_id, json_str=True):
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(DB)
     # This enables column access by name: row['column_name']
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, author, date_posted, journey_image_file, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ?;
+    SELECT id, author, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ?;
     ''', (user_id,)).fetchall()
 
     conn.commit()
@@ -60,6 +60,15 @@ def get_all_user_journeys_json(user_id, json_str=True):
 
     return rows
 
+def get_private_user_journeys_json(user_id, json_str=True):
+    conn = sqlite(DB)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    rows = cur.execute('''
+    SELECT id, author, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND is_private = '1';
+    ''')
+
 def get_one_user_journey_json(user_id, id, json_str=True):
     conn = sqlite3.connect(db)
     # This enables column access by name: row['column_name']
@@ -67,7 +76,7 @@ def get_one_user_journey_json(user_id, id, json_str=True):
     cur = conn.cursor()
 
     rows = cur.execute('''
-    SELECT id, author, date_posted, journey_image_file, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND id = ?;
+    SELECT id, author, date_posted, user_id, start_point_long, start_point_lat, end_point_long, end_point_lat, length_distance FROM journey WHERE user_id = ? AND id = ?;
     ''', (user_id, id,)).fetchall()
 
     conn.commit()
@@ -79,7 +88,20 @@ def get_one_user_journey_json(user_id, id, json_str=True):
     return rows
 
 
-print(get_user_json('1', json_str=True))
+def update_journey(start_point_lat, start_point_long, end_point_lat, end_point_long, waypoints, journey_id, json_str=True):
+    conn = sqlite3.connect(DB)
+    conn.row_factory = sqlite3.Row
+    cur = con.cursor()
+
+    rows = cur.execute('''
+    UPDATE journey SET start_point_lat = ?, start_point_long = ?, end_point_lat = ?, end_point_long = ?, waypoints = ? WHERE id = ?
+    ''', (journey_id))
+    if json_str:
+        return json.dumps([dict(ix) for ix in rows])  # CREATE JSON
+
+    return rows
+
+# print(get_user_json('1', json_str=True))
 
 # # create an SQL connection to the SQLite database
 # con = sqlite3.connect("site.db")
@@ -125,11 +147,17 @@ print(get_user_json('1', json_str=True))
 #     return(cur.fetchall())
 
 
-# def get_attractions(con, water, green_space, traffic, buildings):
-#     cur.execute("""
-#         SELECT attr_lat, attr_long FROM attractions WHERE water = ? AND green_space = ? AND traffic = ? AND buildings = ?
-#         """, (water, green_space, traffic, buildings))
-#     return(cur.fetchall())
+def get_attractions(con, water, green_space, traffic, buildings):
+    cur.execute("""
+        SELECT attr_coordinates FROM attractions WHERE water = ? AND green_space = ? AND traffic = ? AND buildings = ?
+        """, (water, green_space, traffic, buildings))
+    coordinates = cur.fetchall()
+    coordinates = coordinates.split(",")
+    corrdinates = list(map(float, coordinates))
+    return(coordinates)
+
+    # got in column : 123.456,123.456
+    # need for func: [123.456, 123.456] 
 
 
 # def get_users_to_json():

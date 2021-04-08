@@ -7,13 +7,13 @@ from abc import ABC, abstractmethod
 # with open('apikey.txt') as f:
 #     api_key = f.readline()
 #     f.close
-gmaps = googlemaps.Client(key='')
+gmaps = googlemaps.Client(key='AIzaSyCzSDLwakvV-7nq3GXYc1sAapKFiAL8Fd4')
 
 
 # type definitions
 kilometers, latitude, longitude = float, float, float
 # type alias (Should work with latest Python)
-coordinates = list[latitude, longitude]
+coordinates = [latitude, longitude]
 
 
 def distanceBetweenCoords(lat1: latitude, lon1: longitude, lat2: latitude, lon2: longitude) -> kilometers:
@@ -29,11 +29,11 @@ def distanceBetweenCoords(lat1: latitude, lon1: longitude, lat2: latitude, lon2:
 
 class Journey(ABC):  # * Abstract Class
     @abstractmethod
-    def __init__(self, origin: coordinates, destination: coordinates):
+    def __init__(self, origin: coordinates, destination: coordinates, waypoints=[]):
         self.origin = origin
         self.destination = destination
-        self.waypoints = []
-
+        self.waypoints = waypoints
+    
     @abstractmethod
     def getGmapsDirections(self, mode="walking") -> str:
         directions = gmaps.directions(
@@ -44,7 +44,7 @@ class Journey(ABC):  # * Abstract Class
         return directions
 
     @abstractmethod
-    def makeVisitAttractions(self, attractions: list[coordinates], maxConnectDistance: kilometers = 3):
+    def makeVisitAttractions(self, attractions: [coordinates], maxConnectDistance: kilometers = 3):
         """Updates waypoints along a journey to visit nearby attractions where each attraction has to be within maxConnectDistance of a waypoint"""
         waypoints = self.waypoints
         newWaypoints = []

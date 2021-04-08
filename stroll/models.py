@@ -1,12 +1,10 @@
 from datetime import datetime
-from stroll import app, db, login_manager
+from __init__ import app, db, login_manager #used to be from stroll
 from flask_login import UserMixin
-
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,36 +16,33 @@ class User(db.Model, UserMixin):
     traffic = db.Column(db.Boolean)
     buildings = db.Column(db.Boolean)
     pace = db.Column(db.Integer)
-    # journey = db.relationship('Journey', backref='author', lazy=True)
+    journeys = db.relationship('Journey', backref='author', lazy=True) 
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
     
-
-
 class Journey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
-    journey_image_file = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     start_point_long = db.Column(db.Integer, nullable=False)
     start_point_lat = db.Column(db.Integer, nullable=False)
     end_point_long = db.Column(db.Integer, nullable=False)
     end_point_lat = db.Column(db.Integer, nullable=False)
-    length_distance = db.Column(
-        db.Integer, nullable=False)  # may change to float
+    waypoints = db.Column(db.String, nullable=False) #JSON format of a list of coordinates
+    is_private = db.Column(db.Boolean, nullable=False)
+    polyline = db.Column(db.String)
 
     def __repr__(self):
-        return f"Journey('{self.name}', '{self.date_posted}')"
+        return f"Journey('{self.name}', '{self.date_posted}', '{self.is_private}')"
 
 
 class Attractions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    attr_lat = db.Column(db.String, nullable=False)
-    attr_long = db.Column(db.String, nullable=False)
+    attr_coordinates = db.Column(db.String(100), nullable=False)
     attractionName = db.Column(db.String(100), nullable=False)
     attractionDescriptor = db.Column(db.String(100), nullable=False)
     water = db.Column(db.Boolean, nullable=False)
@@ -57,3 +52,4 @@ class Attractions(db.Model):
 
     def __repr__(self):
         return f"Attraction('{self.attractionName}', '{self.attractionDescriptor}', ('{self.latitude}','{self.longitude}')"
+

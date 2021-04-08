@@ -1,154 +1,127 @@
 import os
 import secrets
-from flask import render_template, url_for, flash, redirect, request, jsonify
-from stroll import app, db, bcrypt
-from stroll.forms import RegisterForm, LoginForm, UpdateForm, MapForm, PreferencesForm
-from stroll.models import User
+import sqlite3
+from flask import render_template, url_for, flash, redirect, request, jsonify, HTTPBasicAuth
+from __init__ import app, db, bcrypt
+from stroll.models import User, Journey
 from flask_login import login_user, current_user, logout_user, login_required
-from stroll.journeys.journeyMaker import coord_radial, get_directions
+from stroll.journeys import RadialJourney, SimpleJourney, attractionFinder
+from stroll.connect import get_all_users_json, get_user_json, get_all_user_journeys_json, get_one_user_journey_json, update_journey
+from stroll.journeys import RadialJourney, SimpleJourney, Attractions
 
 
-journeys = [
-    {
-        'author': 'User1',
-        'title': 'My Afternoon Walk',
-        'content': 'Map route, text field',
-        'date_posted': 'April 2, 2021'
-    },
-    {
-        'author': 'User2',
-        'title': 'My Morning Walk',
-        'content': 'Map route, text field',
-        'date_posted': 'April 3, 2021'
-    }
-]
+# /users    GET: Shows list of users, POST: Add new user
+# /users/user_id  GET: Just that user, PUT: Update user, DELETE
+# /users/user_id/journeys   GET: List of journeys, POST: Create new journey
+# /users/user_id/journeys/journey_id   PUT: Update journey, DELETE: Delete journey
+# /login  POST
+# /logout POST nothing
+#! If have time: /users/username/.../?client_id=stuff&client_secret=stuff    for OAuth authentication
+#! If have time: /users/username/attractions + /users/username/attractions/?attraction_id=stuff, otherwise just put in our own attractions
+# https://techtutorialsx.com/2017/01/07/flask-parsing-json-data/
 
 
-@app.route("/")
-@app.route("/home")
+@app.route("/", methods=['GET'])
 def home():
-    return render_template('home.html', journeys=journeys)
+    print("Person accessed website")
+    return "<h1>Welcome to stroLL</h1>"
 
+@app.route('/check_login_status')
+def check_login_status():
+    return str(current_user.is_authenticated)
 
-@app.route("/control", methods=['GET', 'POST'])
-def control():
-    form = MapForm()
-    return render_template('control.html', title='API Control', form=form)
-
-
-@app.route("/directions", methods=['GET', 'POST'])
-def getdirections():
-    # TODO: Use newer / non-deprecated methods within POST
-    if request.method == "POST":
-
-        user_lat_long = request.form['origin_lat_long']
-        user_direction = request.form['direction']
-
-        user_lat_long = user_lat_long.split(",")
-        user_lat_long = list(map(float, user_lat_long))
-
-        waypoints = coord_radial(
-            user_lat_long, 1, user_direction)  # ! Deprecated
-        routecycle = get_directions(
-            user_lat_long, user_lat_long, waypoints)  # ! Deprecated
-
-        return jsonify(routecycle)
-
-    return redirect("/control")
-
-
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
-
-
-@app.route("/register", methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = RegisterForm()
-    if form.validate_on_submit():
+@app.route("/users", methods=['GET', 'POST'])
+def users():
+    if request.method == "GET":
+        content = get_all_users_json(json_str=True)
+        return content
+    elif request.method == "POST" and request.is_json: #register new user
+        content = request.get_json()
         hashed_password = bcrypt.generate_password_hash(
-            form.password.data).decode('utf-8')
-        user = User(username=form.username.data,
-                    email=form.email.data, password=hashed_password)
+            content['password']).decode('utf-8')
+        user = User(username=content['username'],
+                    email=content['email'],
+                    password=hashed_password,
+                    water=content['water'] or False,
+                    green_spaces=content['green_spaces'] or False,
+                    buildings=content['buildings'] or False,
+                    pace=content['pace'] or 7
+                    )
         db.session.add(user)
         db.session.commit()
-        flash('Account created. Please log in.', 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+        return content
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods['POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
-        else:
-            flash('Invalid email and password.', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    content = request.get_json() #content['username'] & content['password'] should exist for you to use
+    def verify_password(username, password): 
+        user = User.query.filter_by(username = username).first()
+        login_user()
+    if not user or not user.verify_password(password):
+        return False
+    g.user = user
+    return True
+    
 
-
-@app.route("/logout")
+@app.route("/logout", methods['POST'])
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect('/')
 
 
-@app.route("/account", methods=['GET', 'POST'])
-@login_required
-def account():
-    form = UpdateForm()
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.email = form.email.data
-        db.session.commit()
-        flash('Account updated successfully.', 'success')
-        return redirect(url_for('account'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.email.data = current_user.email
-    return render_template('account.html', title='Account',
-                           form=form)
+@app.route("/users/<user_id>", methods=['GET', 'PUT'])
+def userRequest(user_id):
+    if request.method == 'GET':
+        #if user has access, show everything, otherwise, show some stuff but don't show sensitive information like passwords
+        content = get_user_json(user_id, json_str=True)
+        return content
+    elif request.method == 'PUT' and request.is_json:
+        content = request.get_json()
+        if content['username'] is None or content['password'] is None:
+            abort(400) 
+        if User.query.filter_by(username = content['username']).first() is not None:
+            abort(400)
+        #do they have access? is current_user == logged in user
+        #check the cookie of the person who sent this and compare to the cookie of user_id
+        # if User.query.filter_by(id=current_user.id).first() == user_id        @Tomm + Balraj
+        # show __repr__ of current_user
 
 
-@app.route("/preferences_set", methods=['POST'])  # <id>
-@login_required
-def preferences():
-    form = PreferencesForm()
-    if form.validate_on_submit():
-        current_user.water = form.water.data
-        current_user.green_spaces = form.green_spaces.data
-        current_user.traffic = form.traffic.data
-        current_user.buildings = form.buildings.data
-        current_user.pace = form.pace.data
-        db.session.commit
-        flash('Preferences successfully set', 'success')
-        # return redirect(url_for('account/preferences'))
-    return render_template('preferences_set.html', title='Set Pref', form=form)
+@app.route("/users/<user_id>/journeys", methods=['GET', 'POST'])
+def journeys(user_id):
+    if request.method == 'GET':
+        #if user has access, show all journeys, if not, show only is_private = false journeys
+        if user has access:
+            content = get_all_user_journeys_json(user_id, json_str=True)
+            return content
+        else:
+            content = get_private_user_journeys_json(user_id, json_str=True)
+            return content
+    elif request.method == 'POST' and request.is_json: #need to make error proof if malformed input passed
+        content = request.get_json()
+        #does user have access? if not 400 access denied
+        """Expecting JSON in format:
+        [
+            journey_type: "Simple" or "Radial"
+            origin: "[latitude (float), longitude (float)]"
+            destination: "[latitude (float), longitude (float)]"
+            [optional] waypoints: "[ [latitude (float), longitude (float)], [latitude (float), longitude (float)], ... ]"
+            [optional] visit_nearby_attractions: "True" or "False"
+            [optional, default 10] radius: kilometers (float)
+        ]
+        """
+        #! Write an outer function or import for handling visit nearby attractions. 
+        journey_type = content['journey_type']
 
-# @app.route("/preferences", methods=['GET'])
-# @login_required
-    # return render_template('preferences.html', title='preferences')
-
-
-@app.route("/preferences_update", methods=['PUT'])
-@login_required
-def updatePreferences():
-    form = PreferencesForm()
-    if form.validate_on_submit():
-        current_user.water = form.water.data
-        current_user.green_spaces = form.green_spaces.data
-        current_user.traffic = form.traffic.data
-        current_user.buildings = form.buildings.data
-        current_user.pace = form.pace.data
-        db.session.commit
-        flash('Preferences successfully updated', 'success')
-        # return redirect(url_for('account/preferences'))
-    return render_template('preferences_update.html', title='Update Pref', form=form)
+@app.route("/users/<user_id>/journeys/<journey_id>", methods=['PUT'])
+def journeyRequest(user_id, journey_id):
+    if request.method == 'PUT' and request.is_json:
+        content = request.get_json()
+        start_point_lat, start_point_long = content['origin']['start_point_lat'], content['origin']['start_point_long']
+        end_point_lat, end_point_long = content['destination']['end_point_lat'], content['destination']['end_point_long']
+        page_content = update_journey(start_point_lat, start_point_long, end_point_lat, end_point_long, content['waypoints'], content['journey_id'], json_str=True)
+        #TODO: also update the polyline string, dont update journey_id, careful with waypoints as should be optional
+        return page_content
+        
+        
