@@ -1,7 +1,5 @@
 import googlemaps
-from typing import NewType
 import json
-import objectpath
 import math
 import random
 
