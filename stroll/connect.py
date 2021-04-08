@@ -145,14 +145,16 @@ def update_journey(start_point_lat, start_point_long, end_point_lat, end_point_l
 #     return(cur.fetchall())
 
 
-def get_attractions(con, water, green_space, traffic, buildings):
-    cur = con.cursor()
+def get_attractions(water, green_space, traffic, buildings):
+    conn = sqlite3.connect(DB)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
     cur.execute("""
         SELECT attr_coordinates FROM attractions WHERE water = ? AND green_space = ? AND traffic = ? AND buildings = ?
         """, (water, green_space, traffic, buildings))
     coordinates = cur.fetchall()
     coordinates = coordinates.split(",")
-    corrdinates = list(map(float, coordinates))
+    coordinates = list(map(float, coordinates))
     return(coordinates)
 
     # got in column : 123.456,123.456
