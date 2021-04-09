@@ -9,7 +9,6 @@ class RadialJourney(Journey):
     def __init__(self, origin: coordinates, destination: coordinates, radius: kilometers, extraWaypointCount: int, waypoints=None):
         super().__init__(origin, destination, waypoints)
         self.radius = float(radius)
-        #print(extraWaypointCount, type(extraWaypointCount), 'eeiuggheiurgherughsearighaseighaerghaeuighaeiughaeiurghaeiru')
         for i in range(extraWaypointCount):
             self.waypoints.append(self.genRandCoordWithinCircle())
 

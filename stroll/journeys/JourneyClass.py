@@ -59,7 +59,6 @@ class Journey():  # * Abstract Class (don't instantiate)
                 latAttraction, lngAttraction = coordAttraction[0], coordAttraction[1]
                 distance = distanceBetweenCoords(
                     latWaypoint, lngWaypoint, latAttraction, lngAttraction)
-                print(distance, "DISTANCEaaeurighaeiurghaeriugh")
                 if not (str(coordAttraction.copy()) in usedUpAttractions) and (distance < closestDistance):
                     closestAttraction, closestDistance = coordAttraction, distance
 
