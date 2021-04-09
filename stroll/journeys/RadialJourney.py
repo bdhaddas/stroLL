@@ -8,8 +8,8 @@ class RadialJourney(Journey):
 
     def __init__(self, origin: coordinates, destination: coordinates, radius: kilometers, extraWaypointCount: int, waypoints=None):
         super().__init__(origin, destination, waypoints)
-        self.radius = radius
-
+        self.radius = float(radius)
+        #print(extraWaypointCount, type(extraWaypointCount), 'eeiuggheiurgherughsearighaseighaerghaeuighaeiughaeiurghaeiru')
         for i in range(extraWaypointCount):
             self.waypoints.append(self.genRandCoordWithinCircle())
 
@@ -17,7 +17,7 @@ class RadialJourney(Journey):
         """Generates a single pair of coordinates within a radius from the origin"""
         origin = self.origin
         radius = self.radius
-        R = 6371  # Approx. radius of earth
+        R = 6371.0  # Approx. radius of earth
         pi = math.pi
         Lat, Lng = (origin[0] * pi) / 180, (origin[1] * pi) / 180
         d = radius * math.sqrt(random.random()) / R

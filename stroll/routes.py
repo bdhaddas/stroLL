@@ -6,7 +6,7 @@ from flask import render_template, url_for, flash, redirect, request, jsonify, a
 from stroll import app, db, bcrypt
 from stroll.models import User, Journey
 from flask_login import login_user, current_user, logout_user, login_required
-from stroll.connect import get_all_users_json, get_user_json, get_all_user_journeys_json, get_one_user_journey_json, update_journey
+from stroll.connect import get_all_users_json, get_user_json, get_all_user_journeys_json, get_one_user_journey_json, update_journey, get_attractions
 from stroll.journeys import RadialJourney, SimpleJourney, getPolyline
 
 
@@ -44,9 +44,9 @@ def users():
         user = User(username=content['username'],
                     email=content['email'],
                     password=hashed_password,
-                    water=content['water'] or False,
-                    green_spaces=content['green_spaces'] or False,
-                    buildings=content['buildings'] or False,
+                    water=content['water'] or 1,
+                    green_spaces=content['green_spaces'] or 1,
+                    buildings=content['buildings'] or 1,
                     pace=content['pace'] or 7
                     )
         db.session.add(user)
@@ -73,7 +73,7 @@ def logout():
 @app.route("/users/<user_id>", methods=['GET'])
 def userRequest(user_id):
     if request.method == 'GET':
-        # if user has access, show everything, otherwise, show some stuff but don't show sensitive information like passwords
+        # show some stuff but don't show sensitive information like passwords
         content = get_user_json(user_id, json_str=True)
         return content
 
@@ -81,7 +81,7 @@ def userRequest(user_id):
 @app.route("/users/<user_id>/journeys", methods=['GET', 'POST'])
 def journeys(user_id):
     if request.method == 'GET':
-        # if user has access, show all journeys, if not, show only is_private = false journeys
+        # TODO: if user has access, show all journeys, if not, show only is_private = false journeys
 
         content = get_all_user_journeys_json(user_id, json_str=True)
         return content
@@ -90,14 +90,14 @@ def journeys(user_id):
         content = request.get_json()
         # does user have access? if not 400 access denied
         """Expecting JSON in format:
-        [
+        {
             journey_type: "Simple" or "Radial"
             origin: "[latitude (float), longitude (float)]"
             destination: "[latitude (float), longitude (float)]"
             [optional] waypoints: "[ [latitude (float), longitude (float)], [latitude (float), longitude (float)], ... ]"
             [optional] visit_nearby_attractions: "True" or "False"
             [optional, default 10] radius: kilometers (float)
-        ]
+        }
         """
 
         journey_type = content['journey_type']
@@ -111,15 +111,25 @@ def journeys(user_id):
             gmapsOutput = journey.getGmapsDirections()
         elif journey_type == "Radial":
             radius = content['radius'] or 10
-            journey = RadialJourney(origin, destination, radius, waypoints, 5)
+            journey = RadialJourney(origin, destination, radius, 5, waypoints)
             gmapsOutput = journey.getGmapsDirections()
         else:
             return abort(404, "Unknown journey type")
 
+        if len(gmapsOutput) == 0:
+            return abort(404, "Coordinates are in ocean or don't work with googlemaps")
+
+        user = User.query.filter_by(id = user_id).first()
+
+        if content['visit_nearby_attractions'] == "True":
+            attractionsList = get_attractions(user.water, user.green_spaces, user.traffic, user.buildings, json_str=True) #1 or 0 values as input
+            #for dictionary in attractionsList:
+
+            #print(attractionsList, 'egreeeeeeeeeeeeeeeeeeeeeeeghuegurhguehgiuehgieushgsui')
+            journey.makeVisitAttractions(attractionsList)
+            gmapsOutput = journey.getGmapsDirections()
+
         waypoints = journey.waypoints
-        # print(type(gmapsOutput))
-        # print(gmapsOutput)
-        # print(jsonify(waypoints))
 
         newJourney = Journey(
             user_id=user_id,

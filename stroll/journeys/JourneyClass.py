@@ -34,7 +34,7 @@ class Journey():  # * Abstract Class (don't instantiate)
         self.waypoints = waypoints or []
     
     def getGmapsDirections(self, mode="walking"):
-        print(self.origin, self.destination, self.waypoints, "aeriugsaenrighsnerhisnrthisrnthisrnhtisrnhisrnhisrnth")
+        # print(self.origin, self.destination, self.waypoints, "aeriugsaenrighsnerhisnrthisrnthisrnhtisrnhisrnhisrnth")
         directions = gmaps.directions(
             self.origin, self.destination, waypoints=self.waypoints, mode="walking"
         )
@@ -42,7 +42,7 @@ class Journey():  # * Abstract Class (don't instantiate)
         #    json.dump(directions, json_file, indent = 4, sort_keys=True)
         return directions
 
-    def makeVisitAttractions(self, attractions: [coordinates], maxConnectDistance: kilometers = 3):
+    def makeVisitAttractions(self, attractions: [coordinates], maxConnectDistance: kilometers = 3.0):
         """Updates waypoints along a journey to visit nearby attractions where each attraction has to be within maxConnectDistance of a waypoint"""
         waypoints = self.waypoints
         newWaypoints = []
@@ -59,6 +59,7 @@ class Journey():  # * Abstract Class (don't instantiate)
                 latAttraction, lngAttraction = coordAttraction[0], coordAttraction[1]
                 distance = distanceBetweenCoords(
                     latWaypoint, lngWaypoint, latAttraction, lngAttraction)
+                print(distance, "DISTANCEaaeurighaeiurghaeriugh")
                 if not (str(coordAttraction.copy()) in usedUpAttractions) and (distance < closestDistance):
                     closestAttraction, closestDistance = coordAttraction, distance
 

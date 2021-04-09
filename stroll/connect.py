@@ -145,17 +145,37 @@ def update_journey(start_point_lat, start_point_long, end_point_lat, end_point_l
 #     return(cur.fetchall())
 
 
-def get_attractions(water, green_space, traffic, buildings):
+def get_attractions(water, green_space, traffic, buildings, json_str=True):
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     cur.execute("""
-        SELECT attr_coordinates FROM attractions WHERE water = ? AND green_space = ? AND traffic = ? AND buildings = ?
+        SELECT attr_coordinates FROM attractions WHERE water = ? OR green_spaces = ? OR traffic = ? OR buildings = ?
         """, (water, green_space, traffic, buildings))
     coordinates = cur.fetchall()
-    coordinates = coordinates.split(",")
-    coordinates = list(map(float, coordinates))
-    return(coordinates)
+    if json_str == True:
+        coordinates = json.dumps([list(ix) for ix in coordinates])  # CREATE JSON
+
+    coordinates = json.loads(str(coordinates))
+
+    for count, coord_pair in enumerate(coordinates):
+        innerString = coord_pair[0] #'3453598.5,5348953489.5'
+        #print(innerString, 'BEFORE')
+        innerString = innerString.split(",") #['3453598.5', '5348953489.5']
+        #print(innerString, 'AFTER')
+        coord_pair = [float(innerString[0]), float(innerString[1])]
+        #print(coord_pair, 'AFTER AFTER')
+        coordinates[count] = coord_pair
+
+
+
+    #for coord_pair in coordinates:
+        #coord_pair = json.loads("[" + coord_pair + "]") #this might error if you do json.loads("23424.4, 34905390.4") instead of json.loads("[23424.4, 34905390.4]")
+        #print(coord_pair)
+        #coord_pair = coord_pair.split(",")
+        #print(coord_pair)
+        #coord_pair = list(map(float, coord_pair))
+    return coordinates
 
     # got in column : 123.456,123.456
     # need for func: [123.456, 123.456] 
